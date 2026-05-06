@@ -210,14 +210,55 @@
                 'https://wa.me/5511934134821?text=Ol%C3%A1%2C%20vim%20do%20site%20e%20queria%20comprar%20no%20atacado!',
                 'https://wa.me/5511932069987?text=Ol%C3%A1%2C%20vim%20do%20site%20e%20queria%20comprar%20no%20atacado!'
             ];
+            var KEY = 'wppRotator';
+            var memCount = null;
+
+            function readCount() {
+                try {
+                    var a = localStorage.getItem(KEY);
+                    if (a != null && a !== '') return Math.max(0, parseInt(a, 10)) || 0;
+                } catch (e) {}
+                try {
+                    var b = sessionStorage.getItem(KEY);
+                    if (b != null && b !== '') return Math.max(0, parseInt(b, 10)) || 0;
+                } catch (e) {}
+                return memCount !== null ? memCount : 0;
+            }
+
+            function writeCount(next) {
+                try {
+                    localStorage.setItem(KEY, String(next));
+                    return;
+                } catch (e) {}
+                try {
+                    sessionStorage.setItem(KEY, String(next));
+                    return;
+                } catch (e) {}
+                memCount = next;
+            }
+
             function pick() {
-                var c = parseInt(localStorage.getItem('wppRotator') || '0', 10) || 0;
+                var c = readCount();
                 var url = links[c % links.length];
-                localStorage.setItem('wppRotator', String(c + 1));
+                writeCount(c + 1);
                 return url;
             }
-            var el = document.querySelector('[data-cta]');
-            if (el) el.href = pick();
+
+            function apply() {
+                var el = document.querySelector('[data-cta]');
+                if (!el) return;
+                try {
+                    el.href = pick();
+                } catch (e) {
+                    el.href = links[0];
+                }
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', apply);
+            } else {
+                apply();
+            }
         })();
 
         function loadMetaPixel() {
