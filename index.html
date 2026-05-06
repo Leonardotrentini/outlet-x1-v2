@@ -237,27 +237,40 @@
                 memCount = next;
             }
 
-            function pick() {
+            function getCurrentLink() {
+                var c = readCount();
+                return links[c % links.length];
+            }
+
+            function consumeNextLink() {
                 var c = readCount();
                 var url = links[c % links.length];
                 writeCount(c + 1);
                 return url;
             }
 
-            function apply() {
+            function applyInitialHref() {
                 var el = document.querySelector('[data-cta]');
                 if (!el) return;
                 try {
-                    el.href = pick();
+                    el.href = getCurrentLink();
                 } catch (e) {
                     el.href = links[0];
                 }
+
+                el.addEventListener('click', function () {
+                    try {
+                        el.href = consumeNextLink();
+                    } catch (err) {
+                        el.href = links[0];
+                    }
+                });
             }
 
             if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', apply);
+                document.addEventListener('DOMContentLoaded', applyInitialHref);
             } else {
-                apply();
+                applyInitialHref();
             }
         })();
 
