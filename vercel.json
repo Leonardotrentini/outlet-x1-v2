@@ -7,6 +7,22 @@
     {
       "source": "/outlet-2/",
       "destination": "/outlet-2/index.html"
+    },
+    {
+      "source": "/lp-01",
+      "destination": "/lp-01/index.html"
+    },
+    {
+      "source": "/lp-01/",
+      "destination": "/lp-01/index.html"
+    },
+    {
+      "source": "/lp-02",
+      "destination": "/lp-02/index.html"
+    },
+    {
+      "source": "/lp-02/",
+      "destination": "/lp-02/index.html"
     }
   ],
   "headers": [
