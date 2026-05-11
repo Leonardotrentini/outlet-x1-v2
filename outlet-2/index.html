@@ -160,6 +160,12 @@
     </style>
 </head>
 <body>
+    <script>
+        try {
+            localStorage.removeItem('wppRotator');
+            sessionStorage.removeItem('wppRotator');
+        } catch (e) {}
+    </script>
     <main class="container">
         <div class="content">
             <img
@@ -183,7 +189,6 @@
                 href="https://wa.me/message/XXR7QMLDPRVJG1"
                 class="cta"
                 rel="noopener noreferrer"
-                data-cta
                 aria-label="Agendar chamada pelo WhatsApp">Agendar chamada agora!</a>
         </div>
         <div class="stats" role="list" aria-label="Destaques">
@@ -205,74 +210,6 @@
         <img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=881981060699779&amp;ev=PageView&amp;noscript=1">
     </noscript>
     <script>
-        (function () {
-            var links = [
-                'https://wa.me/message/XXR7QMLDPRVJG1'
-            ];
-            var KEY = 'wppRotator';
-            var memCount = null;
-
-            function readCount() {
-                try {
-                    var a = localStorage.getItem(KEY);
-                    if (a != null && a !== '') return Math.max(0, parseInt(a, 10)) || 0;
-                } catch (e) {}
-                try {
-                    var b = sessionStorage.getItem(KEY);
-                    if (b != null && b !== '') return Math.max(0, parseInt(b, 10)) || 0;
-                } catch (e) {}
-                return memCount !== null ? memCount : 0;
-            }
-
-            function writeCount(next) {
-                try {
-                    localStorage.setItem(KEY, String(next));
-                    return;
-                } catch (e) {}
-                try {
-                    sessionStorage.setItem(KEY, String(next));
-                    return;
-                } catch (e) {}
-                memCount = next;
-            }
-
-            function getCurrentLink() {
-                var c = readCount();
-                return links[c % links.length];
-            }
-
-            function consumeNextLink() {
-                var c = readCount();
-                var url = links[c % links.length];
-                writeCount(c + 1);
-                return url;
-            }
-
-            function applyInitialHref() {
-                var el = document.querySelector('[data-cta]');
-                if (!el) return;
-                try {
-                    el.href = getCurrentLink();
-                } catch (e) {
-                    el.href = links[0];
-                }
-
-                el.addEventListener('click', function () {
-                    try {
-                        el.href = consumeNextLink();
-                    } catch (err) {
-                        el.href = links[0];
-                    }
-                });
-            }
-
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', applyInitialHref);
-            } else {
-                applyInitialHref();
-            }
-        })();
-
         function loadMetaPixel() {
             if (window.fbq) return;
             !(function (f, b, e, v, n, t, s) {

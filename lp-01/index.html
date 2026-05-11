@@ -160,6 +160,12 @@
     </style>
 </head>
 <body>
+    <script>
+        try {
+            localStorage.removeItem('wppRotator');
+            sessionStorage.removeItem('wppRotator');
+        } catch (e) {}
+    </script>
     <main class="container">
         <div class="content">
             <img
